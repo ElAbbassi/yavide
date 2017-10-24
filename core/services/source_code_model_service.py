@@ -9,6 +9,8 @@ from services.vim.indexer import VimIndexer
 from services.type_deduction.type_deduction import TypeDeduction
 from services.vim.type_deduction import VimTypeDeduction
 from services.parser.clang_parser import ClangParser
+from services.get_all_includes.get_all_includes import GetAllIncludes
+from services.vim.get_all_includes import VimGetAllIncludes
 
 class SourceCodeModel(YavideService):
     def __init__(self, server_queue, yavide_instance):
@@ -20,7 +22,8 @@ class SourceCodeModel(YavideService):
             0x0 : ClangIndexer(self.parser, VimIndexer(yavide_instance)),
             0x1 : SyntaxHighlighter(self.parser, VimSyntaxGenerator(yavide_instance, "/tmp/yavideSyntaxFile.vim")),
             0x2 : Diagnostics(self.parser, VimQuickFixDiagnostics(yavide_instance)),
-            0x3 : TypeDeduction(self.parser, VimTypeDeduction(yavide_instance))
+            0x3 : TypeDeduction(self.parser, VimTypeDeduction(yavide_instance)),
+            0x4 : GetAllIncludes(self.parser, VimGetAllIncludes(yavide_instance)),
         }
 
     def __unknown_service(self, args):
